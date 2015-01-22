@@ -23,6 +23,6 @@ void SoundComponent::update()
 {
 	float x = getPosition().x + getGameObject()->getPosition().x;
 	float y = getPosition().y + getGameObject()->getPosition().y;
-	float z = getZIndex() + getGameObject()->getZIndex();
+	float z = getPosition().z + getGameObject()->getPosition().z;
 	getData().setPosition(x, y, z);
 }

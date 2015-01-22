@@ -68,11 +68,11 @@ void SpriteComponent::postUpdate()
 		x = getScale().x * getGameObject()->getScale().x;
 		y = getScale().y * getGameObject()->getScale().y;
 		getData()->setScale(x, y);
-		x = getRotation() + getGameObject()->getRotation();
+		x = getRotation().z + getGameObject()->getRotation().z;
 		getData()->setRotation(x);
 		if (getData()->getTexture())
 			getData()->setOrigin(getData()->getTexture()->getSize().x / 2, getData()->getTexture()->getSize().y / 2);
-		double z_index = getZIndex() + getGameObject()->getZIndex();
+		double z_index = getPosition().z + getGameObject()->getPosition().z;
 		m_render_manager->addDrawable(std::pair<double, sf::Drawable*>(z_index, getData()));
 	}
 }
