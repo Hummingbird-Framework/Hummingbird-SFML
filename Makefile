@@ -1,5 +1,4 @@
 CC        := g++
-ARCH      := $(shell getconf LONG_BIT)
 
 CFLAGS    := -std=c++11 -Wall -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
@@ -12,12 +11,9 @@ OBJ       := $(addprefix ./,$(SOURCES:./%.cpp=%.o))
 
 all: $(OBJ)
 
-%.o: %.cpp Hummingbird-Base
-	$(CC) -c -o $@ $< $(CFLAGS) ../Hummingbird-Base/Hummingbird-Base.a
+%.o: %.cpp
+	$(CC) -c -o $@ $< $(CFLAGS)
 	ar rvs $(STATIC_LIB_NAME).a $@
-
-Hummingbird-Base: ../Hummingbird-Base/Hummingbird-Base.a
-	make -C ../Hummingbird-Base/
 
 .PHONY: clean
 
