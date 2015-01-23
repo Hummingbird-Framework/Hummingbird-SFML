@@ -39,6 +39,7 @@ void SpriteComponent::setTexture(const std::string& path, const sf::IntRect& are
 {
 	m_texture_id = TextureManager::instance()->loadFromFile(path, area);
 	m_sprite.setTexture(TextureManager::instance()->get(m_texture_id));
+	m_sprite.setOrigin(m_sprite.getTexture()->getSize().x / 2, m_sprite.getTexture()->getSize().y / 2);
 }
 
 
@@ -78,8 +79,6 @@ void SpriteComponent::postUpdate()
 		m_sprite.setScale(x, y);
 		x = getRotation().z + getGameObject()->getRotation().z;
 		m_sprite.setRotation(x);
-		if (m_sprite.getTexture())
-			m_sprite.setOrigin(m_sprite.getTexture()->getSize().x / 2, m_sprite.getTexture()->getSize().y / 2);
 		double z_index = getPosition().z + getGameObject()->getPosition().z;
 		m_render_manager->addDrawable(std::pair<double, sf::Drawable*>(z_index, &m_sprite));
 	}

@@ -16,14 +16,14 @@ namespace hb
 		void setRenderWindowManager(RenderWindowManager* render_manager);
 		RenderWindowManager* getRenderWindowManager();
 		const RenderWindowManager* getRenderWindowManager() const;
-		void setTexture(const std::string& path, const sf::IntRect& area = sf::IntRect());
+		virtual void setTexture(const std::string& path, const sf::IntRect& area = sf::IntRect());
 		sf::Sprite& getSprite();
 		const sf::Sprite& getSprite() const;
 		bool isVisible() const;
 		void setVisible(bool visible);
-		void postUpdate() override;
+		virtual void postUpdate() override;
 
-	private:
+	protected:
 		bool m_visible;
 		sf::Sprite m_sprite;
 		int m_texture_id;
