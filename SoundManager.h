@@ -2,7 +2,7 @@
 #define HB_SOUND_MANAGER
 #include <string>
 #include <SFML/Audio.hpp>
-#include "../Hummingbird-Base/ResourceManager.h"
+#include "../Base.h"
 
 namespace hb
 {

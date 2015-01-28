@@ -2,8 +2,7 @@
 #define HB_SOUND_COMPONENT_H
 #include <string>
 #include <SFML/Audio.hpp>
-#include "../Hummingbird-Base/GameObject.h"
-#include "../Hummingbird-Base/Transform.h"
+#include "../Base.h"
 #include "SoundManager.h"
 
 namespace hb

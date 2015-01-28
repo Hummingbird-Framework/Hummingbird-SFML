@@ -2,8 +2,7 @@
 #define HB_SPRITE_COMPONENT_H
 #include <SFML/Graphics.hpp>
 #include "RenderWindowManager.h"
-#include "../Hummingbird-Base/GameObject.h"
-#include "../Hummingbird-Base/Transform.h"
+#include "../Base.h"
 #include "TextureManager.h"
 
 namespace hb

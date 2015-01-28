@@ -3,7 +3,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "hash_pair.h"
-#include "../Hummingbird-Base/ResourceManager.h"
+#include "../Base.h"
 
 namespace hb
 {
