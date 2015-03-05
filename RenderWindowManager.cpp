@@ -35,7 +35,7 @@ const sf::RenderWindow* RenderWindowManager::getWindow() const
 }
 
 
-void RenderWindowManager::addDrawable(std::pair<double, const sf::Drawable*> drawable)
+void RenderWindowManager::addDrawable(std::pair<double, sf::Sprite> drawable)
 {
 	m_drawables.push(drawable);
 }
@@ -46,9 +46,9 @@ void RenderWindowManager::draw()
 	m_window->clear();
 	while (not m_drawables.empty())
 	{
-		const sf::Drawable* d = m_drawables.top().second;
+		sf::Sprite d = m_drawables.top().second;
 		m_drawables.pop();
-		m_window->draw(*d);
+		m_window->draw(d);
 	}
 	m_window->display();
 }

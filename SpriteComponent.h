@@ -2,31 +2,44 @@
 #define HB_SPRITE_COMPONENT_H
 #include <SFML/Graphics.hpp>
 #include "RenderWindowManager.h"
-#include "../Hummingbird-Base/GameObject.h"
-#include "../Hummingbird-Base/Transform.h"
-#include "TextureManager.h"
+#include "../Base/GameObject.h"
+#include "../Base/Transform.h"
+#include "../Base/Time.h"
+#include "Sprite.h"
+
 
 namespace hb
 {
 	class SpriteComponent : public GameObject::Component, public Transform
 	{
 	public:
-		SpriteComponent(RenderWindowManager* render_manager);
+		SpriteComponent(RenderWindowManager* render_manager, const Sprite& sprite = Sprite());
 		virtual ~SpriteComponent() override;
 		void setRenderWindowManager(RenderWindowManager* render_manager);
 		RenderWindowManager* getRenderWindowManager();
 		const RenderWindowManager* getRenderWindowManager() const;
-		virtual void setTexture(const std::string& path, const sf::IntRect& area = sf::IntRect());
-		sf::Sprite& getSprite();
-		const sf::Sprite& getSprite() const;
+		void setSprite(const Sprite& sprite);
+		const Sprite& getSprite() const;
+		Sprite& getSprite();
+		Vector2d getSize() const;
 		bool isVisible() const;
 		void setVisible(bool visible);
+		bool isLooping() const;
+		void loop(bool loop);
+		bool isPlaying() const;
+		void play();
+		void stop();
 		virtual void postUpdate() override;
 
 	protected:
+		Vector2d getCoords();
+
+		Time m_time_left;
+		int m_current_frame;
 		bool m_visible;
+		bool m_playing, m_looping;
 		sf::Sprite m_sprite;
-		int m_texture_id;
+		Sprite m_animation;
 		RenderWindowManager* m_render_manager;
 	};
 }

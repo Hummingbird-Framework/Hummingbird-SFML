@@ -2,9 +2,11 @@
 #define HB_SOUND_COMPONENT_H
 #include <string>
 #include <SFML/Audio.hpp>
-#include "../Hummingbird-Base/GameObject.h"
-#include "../Hummingbird-Base/Transform.h"
+#include "../Base/GameObject.h"
+#include "../Base/Transform.h"
 #include "SoundManager.h"
+
+// TODO: Make SoundComponent equivalent of SpriteComponent (Sprite)
 
 namespace hb
 {

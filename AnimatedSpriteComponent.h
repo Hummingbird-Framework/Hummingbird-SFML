@@ -1,8 +1,8 @@
 #ifndef HB_ANIMATED_SPRITE_COMPONENT_H
 #define HB_ANIMATED_SPRITE_COMPONENT_H
 #include "SpriteComponent.h"
-#include "../Hummingbird-Base/Time.h"
-#include "../Hummingbird-Base/Vector2d.h"
+#include "../Base/Time.h"
+#include "../Base/Vector2d.h"
 
 // TODO: Hacer que SpriteComponent y AnimatedSpriteComponent sean la misma clase
 namespace hb

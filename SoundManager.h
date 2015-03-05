@@ -2,18 +2,15 @@
 #define HB_SOUND_MANAGER
 #include <string>
 #include <SFML/Audio.hpp>
-#include "../Hummingbird-Base/ResourceManager.h"
+#include "../Base/ResourceManager.h"
 
 namespace hb
 {
-	class SoundManager : public ResourceManager<sf::SoundBuffer, std::string>
+	class SoundManager : public ResourceManager<SoundManager, sf::SoundBuffer, std::string>
 	{
 	public:
-		static SoundManager* instance();
+		SoundManager();
 		int loadFromFile(const std::string& path);
-
-	private:
-		static SoundManager* s_instance;
 	};
 }
 #endif

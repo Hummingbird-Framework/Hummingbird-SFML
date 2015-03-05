@@ -1,3 +1,4 @@
+#include <iostream>
 #include "SoundComponent.h"
 using namespace hb;
 
@@ -18,7 +19,9 @@ SoundComponent::~SoundComponent()
 
 void SoundComponent::setSound(const std::string& sound_path)
 {
-	int m_sound_id = SoundManager::instance()->loadFromFile(sound_path);
+	if (m_sound_id != -1)
+		SoundManager::instance()->release(m_sound_id);
+	m_sound_id = SoundManager::instance()->loadFromFile(sound_path);
 	m_sound.setBuffer(SoundManager::instance()->get(m_sound_id));
 }
 
