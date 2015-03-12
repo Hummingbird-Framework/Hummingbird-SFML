@@ -2,15 +2,14 @@
 using namespace hb;
 
 
-SpriteComponent::SpriteComponent(RenderWindowManager* render_manager, const Sprite& sprite):
+SpriteComponent::SpriteComponent(const Sprite& sprite):
 GameObject::Component(),
 m_time_left(Time::seconds(0)),
 m_current_frame(0),
 m_visible(true),
 m_playing(true),
 m_looping(true),
-m_sprite(sf::Sprite()),
-m_render_manager(render_manager)
+m_sprite()
 {
 	setSprite(sprite);
 }
@@ -22,29 +21,14 @@ SpriteComponent::~SpriteComponent()
 }
 
 
-void SpriteComponent::setRenderWindowManager(RenderWindowManager* render_manager)
-{
-	m_render_manager = render_manager;
-}
-
 void SpriteComponent::setSprite(const Sprite& sprite)
 {
 	m_animation = sprite;
 	m_current_frame = sprite.m_current_frame;
 	m_sprite.setTexture(m_animation.m_texture.get());
+	m_sprite.setOrigin(sprite.m_center.x, sprite.m_center.y);
 	if (m_animation.m_frame_time.asMiliseconds() == 0)
 		stop();
-}
-
-RenderWindowManager* SpriteComponent::getRenderWindowManager()
-{
-	return m_render_manager;
-}
-
-
-const RenderWindowManager* SpriteComponent::getRenderWindowManager() const
-{
-	return m_render_manager;
 }
 
 
@@ -72,10 +56,10 @@ void SpriteComponent::postUpdate()
 			{
 				m_time_left = m_animation.m_frame_time + m_time_left;
 				m_current_frame++;
-				if (m_current_frame > m_animation.m_end_frame)
+				if (m_current_frame >= m_animation.m_frame_order.size())
 				{
 					if (m_looping)
-						m_current_frame = m_animation.m_begin_frame;
+						m_current_frame = 0;
 					else
 					{
 						stop();
@@ -87,17 +71,16 @@ void SpriteComponent::postUpdate()
 		}
 		Vector2d pos = getCoords();
 		m_sprite.setTextureRect(sf::IntRect(pos.x, pos.y, m_animation.m_frame_size.x, m_animation.m_frame_size.y));
-
-		float x = getPosition().x + getGameObject()->getPosition().x;
-		float y = getPosition().y + getGameObject()->getPosition().y;
-		m_sprite.setPosition(x, y);
-		x = getScale().x * getGameObject()->getScale().x;
-		y = getScale().y * getGameObject()->getScale().y;
-		m_sprite.setScale(x, y);
-		x = getRotation().z + getGameObject()->getRotation().z;
-		m_sprite.setRotation(x);
-		double z_index = getPosition().z + getGameObject()->getPosition().z;
-		m_render_manager->addDrawable(std::pair<double, sf::Sprite>(z_index, m_sprite));
+		Vector3d p = getPosition() + getGameObject()->getPosition();
+		Camera camera = Renderer::getCamera();
+		Vector3d v = (camera.getAxisX() * p.x) + (camera.getAxisY() * p.y) + (camera.getAxisZ() * p.z);
+		m_sprite.setPosition(v.x, v.y);
+		double scale_x = getScale().x * getGameObject()->getScale().x;
+		double scale_y = getScale().y * getGameObject()->getScale().y;
+		m_sprite.setScale(scale_x, scale_y);
+		double rotation = getRotation().z + getGameObject()->getRotation().z;
+		m_sprite.setRotation(rotation);
+		Renderer::addDrawable(std::pair<Vector3d, sf::Drawable*>(v, &m_sprite));
 	}
 }
 
@@ -137,8 +120,8 @@ Vector2d SpriteComponent::getCoords()
 	if (m_animation.m_frame_size.x > m_sprite.getTexture()->getSize().x or m_animation.m_frame_size.y > m_sprite.getTexture()->getSize().y)
 		return Vector2d();
 	int nx = m_sprite.getTexture()->getSize().x / (m_animation.m_frame_size.x + m_animation.m_frame_margin.x);
-	int x_coord = (m_current_frame % nx) * (m_animation.m_frame_size.x + m_animation.m_frame_margin.x) + m_animation.m_frame_margin.x;
-	int y_coord = (m_current_frame / nx) * (m_animation.m_frame_size.y + m_animation.m_frame_margin.y) + m_animation.m_frame_margin.y;
+	int x_coord = (m_animation.m_frame_order[m_current_frame] % nx) * (m_animation.m_frame_size.x + m_animation.m_frame_margin.x) + m_animation.m_frame_margin.x;
+	int y_coord = (m_animation.m_frame_order[m_current_frame] / nx) * (m_animation.m_frame_size.y + m_animation.m_frame_margin.y) + m_animation.m_frame_margin.y;
 	return Vector2d(x_coord, y_coord);
 }
 
