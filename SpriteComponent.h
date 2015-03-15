@@ -2,9 +2,9 @@
 #define HB_SPRITE_COMPONENT_H
 #include <SFML/Graphics.hpp>
 #include "Renderer.h"
-#include "../Base/GameObject.h"
-#include "../Base/Transform.h"
-#include "../Base/Time.h"
+#include "../Core/GameObject.h"
+#include "../Core/Transform.h"
+#include "../Core/Time.h"
 #include "Sprite.h"
 
 
@@ -32,7 +32,7 @@ namespace hb
 		Vector2d getCoords();
 
 		Time m_time_left;
-		int m_current_frame;
+		unsigned int m_current_frame;
 		bool m_visible;
 		bool m_playing, m_looping;
 		sf::Sprite m_sprite;
