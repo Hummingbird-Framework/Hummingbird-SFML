@@ -30,7 +30,7 @@ namespace hb
 	struct MouseButtonWorld
 	{
 		Mouse::Button button;
-		int x, y;
+		double x, y;
 		explicit MouseButtonWorld(const Event::MouseButtonEvent& ev):
 		button(ev.button),
 		x(ev.x),
@@ -38,6 +38,9 @@ namespace hb
 		{
 			x += Renderer::getWindow().getView().getCenter().x - Renderer::getWindow().getSize().x / 2;
 			y += Renderer::getWindow().getView().getCenter().y - Renderer::getWindow().getSize().y / 2;
+			Vector3d v = x * Renderer::getCamera().getInverseAxisX() + y * Renderer::getCamera().getInverseAxisY();
+			x = v.x;
+			y = v.y;
 		}
 	};
 
