@@ -3,7 +3,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "hash_pair.h"
-#include "../Base.h"
+#include "../Core/ResourceManager.h"
 
 namespace hb
 {
@@ -14,19 +14,18 @@ namespace hb
 		typedef std::pair<std::string, pair2_int> tex_id;
 	}
 
-	class TextureManager : public ResourceManager<sf::Texture, detail::tex_id>
+	class TextureManager : public ResourceManager<TextureManager, sf::Texture, detail::tex_id>
 	{
 	public:
 		TextureManager();
-		static TextureManager* instance();
+		static detail::tex_id makeTexId(const std::string& path, const sf::IntRect& area);
 		/* Load a Texture resource from file and return its id.
 		   Returns -1 if error while loading texture. */
-		int loadFromFile(const std::string& path, const sf::IntRect& area = sf::IntRect());
 		bool isLoaded(const std::string& path, const sf::IntRect& area = sf::IntRect()) const;
+		void release(int id) override;
+		int getT404() const;
 
 	private:
-		static detail::tex_id makeTexId(const std::string& path, const sf::IntRect& area);
-		static TextureManager* s_instance;
 		int t404;
 	};
 }
