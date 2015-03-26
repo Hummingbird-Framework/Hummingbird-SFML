@@ -7,10 +7,18 @@ bool CollisionComponent::s_collisions_executed = false;
 std::set<CollisionComponent*> CollisionComponent::s_components = std::set<CollisionComponent*>();
 
 CollisionComponent::CollisionComponent(const Vector2d& size):
-m_size(size),
-back(4)
+m_size(size)
 {
-	m_me = s_components.insert(this).first;
+	auto r = s_components.insert(this);
+	assert(r.second);
+	m_me = r.first;
+}
+
+
+CollisionComponent::CollisionComponent(double width, double height):
+CollisionComponent(hb::Vector2d(width, height))
+{
+
 }
 
 
@@ -38,9 +46,12 @@ const std::string& CollisionComponent::getFootprint()
 void CollisionComponent::executeCollisions()
 {
 	for (std::set<CollisionComponent*>::iterator i = s_components.begin(); i != s_components.end(); ++i)
+	{
+		if (not (*i)->getGameObject()->isActive()) continue;
 		for (std::set<CollisionComponent*>::iterator j = i; j != s_components.end(); ++j)
 		{
 			if (i == j) continue;
+			if (not (*j)->getGameObject()->isActive()) continue;
 			Rect intersection;
 			Vector3d p_i = (*i)->getGameObject()->getPosition() + (*i)->getPosition();
 			Vector3d p_j = (*j)->getGameObject()->getPosition() + (*j)->getPosition();
@@ -52,6 +63,7 @@ void CollisionComponent::executeCollisions()
 				(*j)->m_collisions.push(Collision{intersection, (*i)->getGameObject()});
 			}
 		}
+	}
 }
 
 

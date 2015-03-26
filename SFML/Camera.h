@@ -18,7 +18,7 @@ namespace hb
 		void setZNear(double zn);
 		void setZFar(double zf);
 
-		const Vector3d& getPosition() const;
+		Vector3d getPosition() const;
 		const Vector3d& getAxisX() const;
 		const Vector3d& getAxisY() const;
 		const Vector3d& getAxisZ() const;
@@ -27,6 +27,8 @@ namespace hb
 		const Vector3d& getInverseAxisZ() const;
 		double getZNear() const;
 		double getZFar() const;
+		Vector3d ObjecspaceToDrawspace(const Vector3d& v);
+		Vector3d DrawspaceToObjectspace(const Vector3d& v);
 
 	private:
 		void calculateInverseMatrix();

@@ -22,8 +22,7 @@ Camera::~Camera()
 
 void Camera::setPosition(const Vector3d& pos)
 {
-	Vector3d v = (m_x * pos.x) + (m_y * pos.y) + (m_z * pos.z);
-	m_position = v;
+	m_position = pos;
 }
 
 
@@ -60,9 +59,9 @@ void Camera::setZFar(double zf)
 }
 
 
-const Vector3d& Camera::getPosition() const
+Vector3d Camera::getPosition() const
 {
-	return m_position;
+	return (m_x * m_position.x) + (m_y * m_position.y) + (m_z * m_position.z);
 }
 
 
@@ -130,4 +129,16 @@ void Camera::calculateInverseMatrix()
 	m_z_inverse.x =  (m_y.x * m_z.y - m_z.x * m_y.y) * invdet;
 	m_z_inverse.y = -(m_x.x * m_z.y - m_z.x * m_x.y) * invdet;
 	m_z_inverse.z =  (m_x.x * m_y.y - m_y.x * m_x.y) * invdet;
+}
+
+
+Vector3d Camera::ObjecspaceToDrawspace(const Vector3d& v)
+{
+	return (getAxisX() * v.x) + (getAxisY() * v.y) + (getAxisZ() * v.z);
+}
+
+
+Vector3d Camera::DrawspaceToObjectspace(const Vector3d& v)
+{
+	return (getInverseAxisX() * v.x) + (getInverseAxisY() * v.y) + (getInverseAxisZ() * v.z);
 }
