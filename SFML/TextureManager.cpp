@@ -6,8 +6,8 @@ TextureManager::TextureManager():
 ResourceManager<TextureManager, sf::Texture, detail::tex_id>()
 {
 	sf::Image i404;
-	sf::Color c1 (41, 128, 185);
-	sf::Color c2 (39, 174, 96);
+	sf::Color c1 (40, 117, 154); // Blue
+	sf::Color c2 (39, 174, 96);  // Green
 	i404.create(64, 64, c1);
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; j+=2)
@@ -23,6 +23,7 @@ ResourceManager<TextureManager, sf::Texture, detail::tex_id>()
 	t404.create(64, 64);
 	t404.update(i404);
 	this->t404 = this->addResource(makeTexId("t404", sf::IntRect()), t404);
+	get(this->t404).setRepeated(true);
 }
 
 

@@ -2,7 +2,6 @@
 #define HB_SPRITE_COMPONENT_H
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <regex>
 #include "Renderer.h"
 #include "../Core/GameObject.h"
 #include "../Core/Transform.h"
@@ -22,9 +21,6 @@ namespace hb
 		SpriteComponent(const Sprite& sprite = Sprite(), const std::vector<int>& frame_order = std::vector<int>(1, 0), const Time& frame_time = Time::seconds(0));
 		virtual ~SpriteComponent() override;
 
-		static GameObject::Component* factory(std::map<std::string, std::string>& properties, int i);
-		static const std::string& getFootprint();
-
 		virtual void postUpdate() override;
 
 		void setSprite(const Sprite& sprite);
@@ -42,10 +38,10 @@ namespace hb
 		bool isPlaying() const;
 		void play();
 		void stop();
+		void setColor(const Color& color);
+		const Color& getColor() const;
 
 	protected:
-		static std::string s_footprint;
-
 		Vector2d getCoords();
 
 		Time m_time_left, m_frame_time;
@@ -55,6 +51,7 @@ namespace hb
 		sf::Sprite m_sprite;
 		Sprite m_animation;
 		std::vector<int> m_frame_order;
+		Color m_color;
 	};
 }
 #endif

@@ -1,7 +1,6 @@
 #include "SpriteComponent.h"
 using namespace hb;
 
-std::string SpriteComponent::s_footprint = "Sprite";
 
 SpriteComponent::SpriteComponent(const Sprite& sprite, const std::vector<int>& frame_order, const Time& frame_time):
 GameObject::Component(),
@@ -12,7 +11,8 @@ m_visible(true),
 m_playing(true),
 m_looping(true),
 m_sprite(),
-m_frame_order(frame_order)
+m_frame_order(frame_order),
+m_color(1.f, 1.f, 1.f, 1.f)
 {
 	hb_assert(frame_order.size() > 0, "You must define at least one frame for the frame order");
 	setSprite(sprite);
@@ -22,45 +22,6 @@ m_frame_order(frame_order)
 SpriteComponent::~SpriteComponent()
 {
 
-}
-
-
-GameObject::Component* SpriteComponent::factory(std::map<std::string, std::string>& properties, int i)
-{
-	std::string path = properties[s_footprint + "[" + std::to_string(i) + "].path"];
-	hb::Texture tex = hb::Texture::loadFromFile(path, hb::Rect(properties[s_footprint + "[" + std::to_string(i) + "].rect"]));
-	std::string frameSize = properties[s_footprint + "[" + std::to_string(i) + "].frameSize"];
-	std::string frameMargin = properties[s_footprint + "[" + std::to_string(i) + "].frameMargin"];
-	hb::Sprite sprite = hb::Sprite(tex, hb::Vector2d(frameSize), hb::Vector2d(frameMargin));
-
-	std::regex re ("(?:[0-9]+|\\s*,\\s*)+");
-	std::regex re2 ("[0-9]+");
-	std::string s = properties[s_footprint + "[" + std::to_string(i) + "].frameOrder"];
-	std::vector<int> v;
-	if (std::regex_match (s, re))
-	{
-		std::smatch sm;
-		while(std::regex_search (s,sm,re2))
-		{
-			v.push_back(atoi(sm.str(0).c_str()));
-			s = sm.suffix().str();
-		}
-	}
-	if (v.size() == 0)
-		v.push_back(0);
-
-	std::string frameTime = properties[s_footprint + "[" + std::to_string(i) + "].frameTime"];
-	Time t;
-	if (frameTime.length() != 0)
-		t = Time::milliseconds(atoi(frameTime.c_str()));
-
-	return new SpriteComponent(sprite, v, t);
-}
-
-
-const std::string& SpriteComponent::getFootprint()
-{
-	return s_footprint;
 }
 
 
@@ -207,4 +168,17 @@ void SpriteComponent::setFrameTime(const Time& frame_time)
 const Time& SpriteComponent::getFrameTime() const
 {
 	return m_frame_time;
+}
+
+
+void SpriteComponent::setColor(const Color& color)
+{
+	m_color = color;
+	m_sprite.setColor(sf::Color(color.r*255, color.g*255, color.b*255, color.a*255));
+}
+
+
+const Color& SpriteComponent::getColor() const
+{
+	return m_color;
 }
